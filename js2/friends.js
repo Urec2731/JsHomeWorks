@@ -1,16 +1,18 @@
 $('#contacts').click(function (event){
     event.stopPropagation();
-    var target = event.target || event.srcElement;
+    var target = event.target,
+        $target = $(target);
 
-    if (target.nodeName.toString()=='LI'){
-        $(target).toggleClass('prepared to delete');
-    };
+    if (target.nodeName === 'LI'){
+        $target.toggleClass('prepared-to-delete');
+    }
 
-    if(target.className.toString()=='DelButton'){
-        $(target.parentNode).remove();
-    };
+    else if ($target.hasClass('DelButton')){
+        $target.parent().remove();
+        
+    }
 
-    if(target.className.toString()=='DelAll Selected'){
-        $('#contacts>.prepared.to.delete').remove();
-    };
+    else if ($target.hasClass('DelAll')){
+        $('#contacts > .prepared-to-delete').remove();
+    }
 });
