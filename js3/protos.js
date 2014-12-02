@@ -10,11 +10,11 @@ console.log('///////////////////////////////////////////');
 jQuery.fn.hasAttr= function (Attr){return this.attr(Attr)!== undefined;};
 
 
-setTimeout( function(){
-        console.log("jQuery('body').hasAttr('class') = "   + jQuery('body').hasAttr('class'));
-        console.log("jQuery('body').hasAttr('title') = "   + jQuery('body').hasAttr('title'));
-        console.log("jQuery('body').hasAttr('onclick') = " + jQuery('body').hasAttr('onclick'));
-        console.log("jQuery('body').hasAttr('style') = "   + jQuery('body').hasAttr('style'));
+jQuery( function($){
+        console.log("$('body').hasAttr('class') = "   + $('body').hasAttr('class'));
+        console.log("$('body').hasAttr('title') = "   + $('body').hasAttr('title'));
+        console.log("$('body').hasAttr('onclick') = " + $('body').hasAttr('onclick'));
+        console.log("$('body').hasAttr('style') = "   + $('body').hasAttr('style'));
 
     }
-    ,200);
+    );
