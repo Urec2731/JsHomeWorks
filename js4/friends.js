@@ -1,5 +1,5 @@
 jQuery.fn.hasAttr = function (Attr){return this.attr(Attr)!== undefined;};
-jQuery.fn.referenceHtml = function () {return this[0].childNodes[1].data};
+jQuery.fn.referenceHtml = function () {return this.contents().filter(function (){return this.nodeType === 8 })[0].data}; // new
 jQuery(function ($) {
     
 
@@ -14,7 +14,7 @@ jQuery(function ($) {
         })
         .on('click', '[data-add-new-friend]', function () {
             var splitedtext = $('#contacts').referenceHtml().split('$$$$$');       // получение референсной лишки
-            /////////////////////////////////////////////////////                  // на стороне html выглядит вроде удобно
+            /////////////////////////////////////////////////////
             var $name=$('#contacts [data-newname]')[0];
             if (!!$name.value){$('#contacts > li:last-child').before(splitedtext[0] + $name.value + splitedtext[1]);
                 $name.value='';
