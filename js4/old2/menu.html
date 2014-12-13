@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Список Друзей</title>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <style type="text/css">
+        .friends-name {width: auto; color: inherit; }
+        .reference-html-code {display: none; }
+        .selected {background-color: aquamarine;}
+        #contacts>li {padding-left: 1cm; border-style: none;}
+    </style>
+</head>
+<body>
+
+<h1>Список Друзей</h1>
+
+<div>
+    <div>
+        <h2>Контакты</h2>
+        <ul id="contacts">
+            <li data-friend class="reference-html-code"><input type="text" class="friends-name" value="$$$$$" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Саня" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Толик" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Вован" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Влад" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Кирюша" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Шурик" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Миха" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Тоха" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Андрей" /><button data-delete>Delete</button></li>
+            <li data-friend><input type="text" class="friends-name" value="Дима" /><button data-delete>Delete</button></li>
+            <li >
+                <input type="text" class="friends-name" data-newname title="Добавте друга"/>
+                <button id="add-new-friend" data-add-new-friend>Add friend name</button>
+                <button id="delete-all">Delete Selected</button>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript" src="friends.js"></script>
+</body>
+</html>
