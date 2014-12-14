@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Список Друзей</title>
+    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/underscore.js"></script>
+    <script type="text/javascript" src="lib/backbone.js"></script>
+    <style type="text/css">
+        .friends-name {width: auto; color: inherit; }
+        /*.reference-html-code {display: none; }*/
+        .selected {background-color: aquamarine;}
+        #contacts>li {padding-left: 1cm; border-style: none;}
+    </style>
+</head>
+<body>
+
+<h1>Список Друзей</h1>
+
+<div>
+    <div>
+        <h2>Контакты</h2>
+        <ul id="contacts">
+            <li data-friend><input type="text" class="friends-name" value="$$$$$" /><button type="button" data-delete>Delete</button></li>
+        </ul>
+        <div >
+            <input type="text" class="friends-name" id="friends-new-name" title="Добавте друга"/>
+            <button type="button" id="add-new-friend">Add friend name</button>
+            <button type="button"id="delete-all">Delete Selected</button>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript" src="friends.js"></script>
+</body>
+</html>
