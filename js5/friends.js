@@ -2,62 +2,83 @@ jQuery(function ($) {
     var $contacts = $('#contacts');
     var $Li_template = $contacts.find(':first-child').eq(0).remove(); $contacts.empty();
     var Names  = ['Саня','Толик','Вован','Влад','Кирюша','Шурик','Миха','Тоха','Андрей','Дима'];
-    var NamesM =[];
-    var object ={
-        myChangesControllerAdd: function(AddedModel){
-            console.log('Changes Come In');
-            $contacts.addNewFriend(AddedModel.get('friendName'),AddedModel.cid);
 
+    var listener ={
+        myChangesControllerAdd: function(AddedModel){
+            this.addNewFriend(AddedModel.get('friendName'),AddedModel.cid);
         },
         myChangesControllerRemove: function (RemovedModel){
-            $contacts.find( '[data-friend='+RemovedModel.cid+']').remove();console.log('Real remove');
+            this.$el.find( '[data-friend='+RemovedModel.cid+']').remove();
         }
     };
 
-    $contacts.addNewFriend   = function (someName,cid) {
-        var $clone = $Li_template.clone();
-        $clone.find('input').attr('value',someName);
-        $clone.attr('data-friend',cid);
-        $clone.appendTo(this);
-    };
 
+    var Friend = Backbone.Model.extend();
+    var FriendsCollection = Backbone.Collection.extend();
+    var collection = new FriendsCollection();
 
-    Names.forEach(function (friendName){
-        NamesM.push(new Backbone.Model({friendName:friendName}));
-    });
+    var ContactsView = Backbone.View.extend ({
+        el: '#contacts',
+        listener: listener,
+        $template: $Li_template,
 
-    var collection = new Backbone.Collection();
-    _.extend(object, Backbone.Events);
-    object.listenTo(collection,'add',object.myChangesControllerAdd);
-    object.listenTo(collection,'remove',object.myChangesControllerRemove);
-
-    collection.set(NamesM);
-
-    $('#contacts')
-        .on('click', '[data-friend]', function (e) {
+        events: {
+            'click [data-friend]': 'selectUnselect',
+            'click [data-delete]': 'removeOneContact'
+        },
+        selectUnselect: function (e) {
             var $target=$(e.target);
             if ($target.is('[data-friend]')){$target.toggleClass('selected');}
-        })
-        .on('click', '[data-delete]', function (e) {
+        },
+        removeOneContact: function (e) {
             var tmpModel = collection.get(
-            $(e.target).closest('[data-friend]').attr('data-friend'));
-            collection.remove(tmpModel);console.log('Remove click');
-        })
+                $(e.target).closest('[data-friend]').attr('data-friend'));
+            collection.remove(tmpModel);
+        },
+        addNewFriend: function (someName,cid) {
+            var $clone = this.$template.clone();
+            $clone.find('input').attr('value',someName);
+            $clone.attr('data-friend',cid);
+            $clone.appendTo(this.$el);
+        }
 
-    ;
+    });
 
-    $('#add-new-friend').click(function () {
-        var $name=$('#friends-new-name')[0];
-        if (!!$name.value){
-            collection.add(new Backbone.Model({friendName:$name.value}))
-            $name.value='';
+    var view = new ContactsView();
+    view.listenTo(collection,'add',view.listener.myChangesControllerAdd);
+    view.listenTo(collection,'remove',view.listener.myChangesControllerRemove);
+
+
+
+    var NamesM = Names.map(function (friendName){
+        return new Friend({friendName:friendName});
+    });
+    collection.set(NamesM);
+
+
+    var StaticController = Backbone.View.extend({
+        el: '#static-control',
+        events: {
+            'click #add-new-friend': 'addNewFriendOnClick',
+            'click #delete-all': 'removeSelectedContacts'
+        },
+        addNewFriendOnClick: function () {
+            var $name=this.$el.find('#friends-new-name')[0];
+            if (!!$name.value){
+                collection.add(new Friend({friendName:$name.value}))
+                $name.value='';
+            }
+        },
+        removeSelectedContacts: function () {
+            var $fetch = view.$el.find('.selected');
+            var i = 0, tmpArray = [];
+            for (i = 0; i < $fetch.length; i++){tmpArray.push($fetch.eq(i).attr('data-friend'))};
+            collection.remove(tmpArray.map(function (mycid){return collection.get(mycid)}));
         }
     });
-    $('#delete-all').click(function () {
-        var $fetch=$contacts.find('.selected');
-        var i = 0, tmpArray = [];
-        for (i = 0; i < $fetch.length; i++){tmpArray.push($fetch.eq(i).attr('data-friend'))};
-        collection.remove(tmpArray.map(function (mycid){return collection.get(mycid)}));
-    });
+
+    var staticController = new StaticController();
+
+
 
 });
