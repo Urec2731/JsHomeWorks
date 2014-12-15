@@ -3,6 +3,15 @@ jQuery(function ($) {
     var $Li_template = $contacts.find(':first-child').eq(0).remove(); $contacts.empty();
     var Names  = ['Саня','Толик','Вован','Влад','Кирюша','Шурик','Миха','Тоха','Андрей','Дима'];
 
+    var listener ={
+        myChangesControllerAdd: function(AddedModel){
+            this.addNewFriend(AddedModel.get('friendName'),AddedModel.cid);
+        },
+        myChangesControllerRemove: function (RemovedModel){
+            this.$el.find( '[data-friend='+RemovedModel.cid+']').remove();
+        }
+    };
+
 
     var Friend = Backbone.Model.extend();
     var FriendsCollection = Backbone.Collection.extend();
@@ -10,6 +19,7 @@ jQuery(function ($) {
 
     var ContactsView = Backbone.View.extend ({
         el: '#contacts',
+        listener: listener,
         $template: $Li_template,
 
         events: {
@@ -30,19 +40,13 @@ jQuery(function ($) {
             $clone.find('input').attr('value',someName);
             $clone.attr('data-friend',cid);
             $clone.appendTo(this.$el);
-        },
-        myChangesControllerAdd: function(AddedModel){
-            this.addNewFriend(AddedModel.get('friendName'),AddedModel.cid);
-        },
-        myChangesControllerRemove: function (RemovedModel){
-            this.$el.find( '[data-friend='+RemovedModel.cid+']').remove();
         }
 
     });
 
     var view = new ContactsView();
-    view.listenTo(collection,'add',view.myChangesControllerAdd);
-    view.listenTo(collection,'remove',view.myChangesControllerRemove);
+    view.listenTo(collection,'add',view.listener.myChangesControllerAdd);
+    view.listenTo(collection,'remove',view.listener.myChangesControllerRemove);
 
 
 
