@@ -1,14 +1,15 @@
 jQuery(function ($) {
     var $contacts = $('#contacts');
-    var $Li_template = $contacts.find(':first-child').eq(0).remove(); $contacts.empty();
-    var Names  = ['Саня','Толик','Вован','Влад','Кирюша','Шурик','Миха','Тоха','Андрей','Дима'];
+    var $Li_template = $contacts.find(':first-child').eq(0).remove(); 
+    $contacts.empty();
+    var names  = ['Саня','Толик','Вован','Влад','Кирюша','Шурик','Миха','Тоха','Андрей','Дима'];
 
 
     var Friend = Backbone.Model.extend();
     var FriendsCollection = Backbone.Collection.extend();
     var collection = new FriendsCollection();
 
-    var ContactsView = Backbone.View.extend ({
+    var ContactsView = Backbone.View.extend({
         el: '#contacts',
         $template: $Li_template,
 
@@ -16,40 +17,46 @@ jQuery(function ($) {
             'click [data-friend]': 'selectUnselect',
             'click [data-delete]': 'removeOneContact'
         },
+        
+        initialize: function () {
+            this.listenTo(this.collection, 'add', this.myChangesControllerAdd);
+            this.listenTo(this.collection, 'remove', this.myChangesControllerRemove);
+        },
+        
         selectUnselect: function (e) {
             var $target=$(e.target);
-            if ($target.is('[data-friend]')){$target.toggleClass('selected');}
+            if ($target.is('[data-friend]')){
+                $target.toggleClass('selected');
+            }
         },
         removeOneContact: function (e) {
             var tmpModel = collection.get(
-                $(e.target).closest('[data-friend]').attr('data-friend'));
-            collection.remove(tmpModel);
+                $(e.target).closest('[data-friend]').attr('data-friend')
+            );
+            this.collection.remove(tmpModel);
         },
-        addNewFriend: function (someName,cid) {
+        addNewFriend: function (someName, cid) {
             var $clone = this.$template.clone();
-            $clone.find('input').attr('value',someName);
-            $clone.attr('data-friend',cid);
+            $clone.find('input').prop('value', someName);
+            $clone.attr('data-friend', cid);
             $clone.appendTo(this.$el);
         },
         myChangesControllerAdd: function(AddedModel){
-            this.addNewFriend(AddedModel.get('friendName'),AddedModel.cid);
+            this.addNewFriend(AddedModel.get('friendName'), AddedModel.cid);
         },
         myChangesControllerRemove: function (RemovedModel){
-            this.$el.find( '[data-friend='+RemovedModel.cid+']').remove();
+            this.$('[data-friend=' + RemovedModel.cid + ']').remove();
         }
 
     });
 
-    var view = new ContactsView();
-    view.listenTo(collection,'add',view.myChangesControllerAdd);
-    view.listenTo(collection,'remove',view.myChangesControllerRemove);
-
-
-
-    var NamesM = Names.map(function (friendName){
-        return new Friend({friendName:friendName});
+    var view = new ContactsView({
+        collection: collection
     });
-    collection.set(NamesM);
+
+    collection.set(names.map(function (friendName) {
+        return {friendName: friendName};
+    }));
 
 
     var StaticController = Backbone.View.extend({
@@ -59,21 +66,25 @@ jQuery(function ($) {
             'click #delete-all': 'removeSelectedContacts'
         },
         addNewFriendOnClick: function () {
-            var $name=this.$el.find('#friends-new-name')[0];
+            var $name = this.$('#friends-new-name')[0];
             if (!!$name.value){
-                collection.add(new Friend({friendName:$name.value}))
+                collection.add({friendName: $name.value});
                 $name.value='';
             }
         },
         removeSelectedContacts: function () {
-            var $fetch = view.$el.find('.selected');
-            var i = 0, tmpArray = [];
-            for (i = 0; i < $fetch.length; i++){tmpArray.push($fetch.eq(i).attr('data-friend'))};
-            collection.remove(tmpArray.map(function (mycid){return collection.get(mycid)}));
+            var models = view.$('.selected').map(function (i, item) {
+                var cid = item.getAttribute('data-friend');
+                return collection.get(cid);
+            }).get();
+            
+            this.collection.remove(models);
         }
     });
 
-    var staticController = new StaticController();
+    var staticController = new StaticController({
+        collection: collection
+    });
 
 
 
