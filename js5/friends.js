@@ -7,7 +7,9 @@ jQuery(function ($) {
 
     var Friend = Backbone.Model.extend();
     var FriendsCollection = Backbone.Collection.extend();
-    var collection = new FriendsCollection();
+    var collection = new FriendsCollection({
+        model: Friend
+    });
 
     var ContactsView = Backbone.View.extend({
         el: '#contacts',
@@ -24,13 +26,13 @@ jQuery(function ($) {
         },
         
         selectUnselect: function (e) {
-            var $target=$(e.target);
+            var $target= $(e.target);
             if ($target.is('[data-friend]')){
                 $target.toggleClass('selected');
             }
         },
         removeOneContact: function (e) {
-            var tmpModel = collection.get(
+            var tmpModel = this.collection.get(
                 $(e.target).closest('[data-friend]').attr('data-friend')
             );
             this.collection.remove(tmpModel);
@@ -68,11 +70,12 @@ jQuery(function ($) {
         addNewFriendOnClick: function () {
             var $name = this.$('#friends-new-name')[0];
             if (!!$name.value){
-                collection.add({friendName: $name.value});
+                this.collection.add({friendName: $name.value});
                 $name.value='';
             }
         },
         removeSelectedContacts: function () {
+            var collection = this.collection;
             var models = view.$('.selected').map(function (i, item) {
                 var cid = item.getAttribute('data-friend');
                 return collection.get(cid);
