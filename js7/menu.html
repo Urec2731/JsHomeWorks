@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Список Друзей</title>
+    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/underscore.js"></script>
+    <script type="text/javascript" src="lib/backbone.js"></script>
+    <script type="text/javascript" src="lib/backbone.wreqr.js"></script>
+    <script type="text/javascript" src="lib/backbone.babysitter.js"></script>
+    <script type="text/javascript" src="lib/backbone.marionette.js"></script>
+    <style type="text/css">
+        .friends-name {width: auto; color: inherit; }
+        .selected {background-color: aquamarine;}
+        #contacts > li {padding-left: 1cm; border-style: none;}
+    </style>
+</head>
+<body>
+
+<h1>Список Друзей</h1>
+
+    <h2>Контакты</h2>
+    <div id="friend-app">
+        <div id="contacts"></div>
+        <div id="static-controller"></div>
+    </div>
+
+<script id="static-controller-template" type="text/html">
+    <input type="text" class="friends-name" id="friends-new-name" title="Добавте друга"/>
+    <button type="button" id="add-new-friend">Add friend name</button>
+    <button type="button"id="delete-all">Delete Selected</button>
+</script>
+<script id="no-children" type="text/html">
+    <h2>No Children</h2>
+</script>
+<script id="some-template" type="text/html">
+    <input type="text" class="friends-name" value="<%= friendName %>" />
+    <button type="button" data-del-button>Delete</button>
+</script>
+
+
+
+<script type="text/javascript" src="friends.js"></script>
+</body>
+</html>
