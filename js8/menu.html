@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Список Друзей</title>
+
+    <style type="text/css">
+        .friends-name {width: auto; color: inherit; }
+        .selected {background-color: aquamarine;}
+        #contacts > li {padding-left: 1cm; border-style: none;}
+    </style>
+</head>
+<body>
+
+<h1>Список Друзей</h1>
+
+    <h2>Контакты</h2>
+    <div id="friend-app">
+        <div id="contacts"></div>
+        <div id="static-controller"></div>
+    </div>
+
+<script id="static-controller-template" type="text/html">
+    <input type="text" class="friends-name" id="friends-new-name" title="Добавте друга"/>
+    <button type="button" id="add-new-friend">Add friend name</button>
+    <button type="button" id="delete-all">Delete Selected</button>
+</script>
+<script id="no-children" type="text/html">
+    <h3>No Children</h3>
+</script>
+<script id="some-template" type="text/html">
+    <input type="text" class="friends-name" value="<%= friendName %>" />
+    <button type="button" data-del-button>Delete</button>
+</script>
+
+
+
+<script type="text/javascript" data-main="app" src="lib/require.js"></script>
+</body>
+</html>
