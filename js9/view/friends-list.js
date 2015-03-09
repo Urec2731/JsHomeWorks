@@ -9,7 +9,25 @@ define('view/friends-list',
             tagName: 'ul',
             events: {
                 'click [data-cid]': 'select-and-unSelect',
-                'click [data-del-button]': 'removeOneContact'
+                'click [data-del-button]': 'removeOneContact',
+                'delete:selected': 'removeSelectedContacts',
+                'friend:add': 'addNewFriendOnClick'
+            },
+            addNewFriendOnClick: function () {
+                var $name = document.getElementById('friends-new-name');
+                var $nameTrim = $name.value.trim();
+                if (!!$nameTrim){
+                    this.collection.add({friendName: $nameTrim});
+                    $name.value='';
+                }
+            },
+            removeSelectedContacts: function () {
+                var view = this;
+                var models = view.$('.selected').map(function (i, item) {
+                    var cid = item.getAttribute('data-cid');
+                    return view.children.findByCid(cid).model;
+                }).get();
+                view.collection.remove(models);
             },
             'select-and-unSelect': function (e) {
                 var $target= this.$(e.target);
