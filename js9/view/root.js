@@ -11,7 +11,15 @@ define('view/root', ['marionette'], function (Mn){
             'click #delete-all': 'removeSelectedContacts'
         },
         addNewFriendOnClick: function () {
-            this.getRegion('contacts').currentView.$el.trigger('friend:add');
+            var nameTrim;
+            var $name = this.$('#friends-new-name')[0];
+            if ($name.value) {
+                nameTrim = $name.value.trim();
+                if (nameTrim) {
+                    this.getRegion('contacts').currentView.$el.trigger('friend:add', nameTrim);
+                }
+                $name.value='';
+            }
         },
         removeSelectedContacts: function () {
             this.getRegion('contacts').currentView.$el.trigger('delete:selected');

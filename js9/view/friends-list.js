@@ -14,12 +14,7 @@ define('view/friends-list',
                 'friend:add': 'addNewFriendOnClick'
             },
             addNewFriendOnClick: function () {
-                var $name = document.getElementById('friends-new-name');
-                var $nameTrim = $name.value.trim();
-                if (!!$nameTrim){
-                    this.collection.add({friendName: $nameTrim});
-                    $name.value='';
-                }
+                    this.collection.add({friendName: arguments[1]});
             },
             removeSelectedContacts: function () {
                 var view = this;
