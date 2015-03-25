@@ -1,3 +1,9 @@
+/**
+ * @module '../views/layout.js'
+ * @exports RootView
+ * @class RootView
+ * @extends Marionette.LayoutView
+ */
 export class RootView extends Marionette.LayoutView {
     constructor() {
         super({

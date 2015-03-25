@@ -1,6 +1,17 @@
+/**
+ * @module '../views/friends-list.js'
+ * @extends '../controllers/friends.js'
+ * @extends '../views/friend-item.js'
+ * @extends '../views/no-children.js'
+ * @exports FriendsListView
+ */
 import {friends}  from '../controllers/friends.js';
 import {FriendItem} from '../views/friend-item.js';
 import {EmptyView}  from '../views/no-children.js';
+/**
+ * @class FriendsListView
+ * @extends Marionette.CollectionView
+ */
 export class FriendsListView extends Marionette.CollectionView {
     constructor() {
         super({

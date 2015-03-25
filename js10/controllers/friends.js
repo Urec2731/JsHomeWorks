@@ -1,3 +1,9 @@
+/**
+ * @module '../controllers/friends.js'
+ * @extends '../data/names.js'
+ * @extends '../collections/friends.js'
+ * @exports friends
+ */
 import {names} from '../data/names.js';
 import {Friends} from '../collections/friends.js';
 
